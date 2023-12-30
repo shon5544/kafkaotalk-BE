@@ -4,8 +4,11 @@ server:
 jwt:
   access:
     header: ${ACCESS_HEADER}
+    expiration: 24
   refresh:
     header: ${REFRESH_HEADER}
+    expiration: 336
+  secret: ${SECRET_KEY}
 
 spring:
   datasource:
