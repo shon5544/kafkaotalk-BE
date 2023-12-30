@@ -2,12 +2,15 @@ package com.beomsu.kafkaotalkbe.global.auth.token
 
 import com.beomsu.kafkaotalkbe.app.friends.application.port.out.UserPersistencePort
 import com.beomsu.kafkaotalkbe.app.friends.domain.User
+import com.beomsu.kafkaotalkbe.global.auth.dto.ReIssuedTokens
 import com.beomsu.kafkaotalkbe.global.domain.ICustomLocalDateTime
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.StandardCharsets
 import java.util.Date
 
@@ -57,5 +60,18 @@ class TokenProvider(
                 )
             )
             .compact()!!
+    }
+
+    @Transactional
+    fun reIssueTokens(refreshToken: String): ReIssuedTokens {
+        val user = userRepository.findByRefreshToken(refreshToken)
+            ?: throw EntityNotFoundException("토큰 재발급 실패: 해당 refresh token을 가진 User가 존재하지 않습니다.")
+
+        val newAccessToken: String = createAccessToken(user)
+        val newRefreshToken: String = createRefreshToken()
+
+        user.refreshToken = refreshToken
+
+        return ReIssuedTokens(newAccessToken, newRefreshToken)
     }
 }
