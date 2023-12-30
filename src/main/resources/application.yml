@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${USERNAME} # 데이터베이스 커넥션 이름
+    password: ${PASSWORD} # 데이터베이스 커넥션 비밀번호
+    url: ${DB_URL}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # 옵션은 필요에 따라 변경
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100 # 지연로딩 최적화를 위한 옵션
+        format_sql: true
+
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  file:
+    name: ${user.dir}/log/server_log.log
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
