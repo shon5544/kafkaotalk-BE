@@ -1,6 +1,12 @@
 server:
   port: 8080
 
+jwt:
+  access:
+    header: ${ACCESS_HEADER}
+  refresh:
+    header: ${REFRESH_HEADER}
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
