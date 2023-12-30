@@ -45,4 +45,17 @@ class TokenProvider(
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()!!
     }
+
+    fun createRefreshToken(): String {
+        val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
+
+        return Jwts.builder()
+            .setSubject(REFRESH_TOKEN_SUBJECT)
+            .setExpiration(
+                Date.from(
+                    localDateTime.plusHour(refreshTokenExpiration)
+                )
+            )
+            .compact()!!
+    }
 }
