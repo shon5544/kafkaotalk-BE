@@ -1,4 +1,4 @@
-package com.beomsu.kafkaotalkbe.friends.domain
+package com.beomsu.kafkaotalkbe.app.friends.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
