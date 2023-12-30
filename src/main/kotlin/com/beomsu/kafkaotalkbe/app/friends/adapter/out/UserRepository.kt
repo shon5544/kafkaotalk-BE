@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository
 @Repository
 class UserRepository(private val userJpaRepository: UserJpaRepository):
     UserPersistencePort {
-
+    override fun findByRefreshToken(refreshToken: String): User? {
+        return userJpaRepository.findByRefreshToken(refreshToken)
+    }
 }
 
 
 @Repository
 interface UserJpaRepository: JpaRepository<User, Long> {
+    fun findByRefreshToken(refreshToken: String): User?
 }
